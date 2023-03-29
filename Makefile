@@ -58,5 +58,3 @@ re: 	fclean all
 $(VERBOSE).SILENT:
 
 .PHONY: all clean fclean re
-
-

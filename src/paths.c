@@ -114,6 +114,6 @@ void	command_executer(char *argv, char **envp)
 		free(path);
 		perros();
 	}
-	free(way);
-	free(path);
+	free (way);
+	free (path);
 }
