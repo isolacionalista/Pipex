@@ -37,6 +37,41 @@ na funcao perror, printa o "Error" e em seguida dispoe o erro
 sucedido automaticamente
 */
 
+void	free_2(char **without, char **paths)
+{
+	int	p;
+
+	p = -1;
+	if (without)
+	{
+		while (without[++p])
+			free(without[p]);
+		free(without);
+	}
+	p = -1;
+	if (paths)
+	{
+		while (paths[++p])
+			free(paths[p]);
+		free(paths);
+	}
+}
+
+void	free_1(char **way, char *path)
+{
+	int	i;
+
+	i = -1;
+	if (way)
+	{
+		while (way[++i])
+			free(way[i]);
+		free(way);
+	}
+	if (path)
+		free(path);
+}
+
 void	perros(void)
 {
 	perror("\033[1;31mError\033[0;97m");

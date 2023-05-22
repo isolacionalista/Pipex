@@ -36,84 +36,61 @@ char	*triple(char *s1, char *s2, char *s3)
 	return (str);
 }
 
-char	**withoutflag(char *command)
-{
-	char	**without;
-
-	without = ft_split(command, 32);
-	if (!without)
-	{
-		free (without);
-		perros();
-	}
-	return (without);
-}
-
 char	**pathfinder_first(char **envp)
 {
-	char	**path_search;
 	int		p;
 
 	p = 0;
 	while (!(ft_strnstr(envp[p], "PATH", 4)))
 		p++;
-	path_search = ft_split(envp[p] + 5, ':');
-	if (!path_search)
-	{
-		free (path_search);
-		perros();
-	}
-	while (path_search)
-		return (path_search);
-	free (path_search);
-	return (0);
+	return (envp + 5);
 }
 
 /* funcao que encontra o PATH do comando*/
 char	*pathfinder_second(char *command, char **envp)
 {
+	char	**paths;
+	char	**without;
 	char	*path;
 	int		p;
 
 	p = 0;
-	while (pathfinder_first(envp)[p])
+	while (!(ft_strnstr(envp[p], "PATH", 4)))
+		p++;
+	paths = ft_split(envp[p], ':');
+	without = ft_split(command, 32);
+	p = 0;
+	while (paths[p])
 	{
-		path = triple(pathfinder_first(envp)[p], "/", withoutflag(command)[0]);
+		path = triple(paths[p], "/", without[0]);
 		if (access(path, 0) == 0)
 			return (path);
-		if (!access(path, 0))
-		{
-			free (path);
-			perros();
-		}
 		free(path);
 		p++;
 	}
+	free_2(without, paths);
 	return (0);
 }
 
 void	command_executer(char *argv, char **envp)
 {
 	char	*path;
-	char	**way;
+	char	**flag;
 
-	way = ft_split(argv, 32);
-	if (!way)
+	flag = ft_split(argv, 32);
+	if (!flag)
 	{
 		perros();
 	}
-	path = pathfinder_second(way[0], envp);
+	path = pathfinder_second(flag[0], envp);
 	if (!path)
 	{
-		free(way);
+		free_1(flag, path);
 		perros();
 	}
-	if (execve(path, way, envp) == -1)
+	if (execve(path, flag, envp) == -1)
 	{
-		free(way);
-		free(path);
+		free_1(flag, path);
 		perros();
 	}
-	free (way);
-	free (path);
 }

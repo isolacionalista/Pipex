@@ -42,6 +42,8 @@ fclean: 	clean
 
 re:				fclean all $(NAME)
 
+$(VERBOSE).SILENT:
+
 .PHONY:		all clean fclean re
 
 

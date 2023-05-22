@@ -39,13 +39,14 @@
 
 int		main(int argc, char *argv[], char *envp[]);
 int		erros(void);
+void	free_1(char **way, char *path);
 void	perros(void);
 char	*pathfinder_second(char *command, char **envp);
 char	*triple(char *s1, char *s2, char *s3);
 void	command_executer(char *argv, char **envp);
 void	progenitor(int *fd, char **argv, char **envp);
 void	embriao(int *fd, char **argv, char **envp);
-char	**withoutflag(char *command);
 char	**pathfinder_first(char **envp);
+void	free_2(char **without, char **paths);
 
 #endif

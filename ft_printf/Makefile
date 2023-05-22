@@ -6,7 +6,7 @@
 #    By: imendonc <imendonc@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/21 12:34:53 by imendonc          #+#    #+#              #
-#    Updated: 2022/12/05 13:28:56 by imendonc         ###   ########.fr        #
+#    Updated: 2023/05/22 21:08:43 by imendonc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,8 @@ re:			fclean all $(NAME)
 #comando phony melhora a performance do makefile
 #para que os comandos nao entrem em conflito com possiveis ficheiros
 #ou outroc comandos pre defenidos 
+
+$(VERBOSE).SILENT:
 
 .PHONY:		all clean fclean re
 

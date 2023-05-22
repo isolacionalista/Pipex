@@ -6,76 +6,74 @@
 /*   By: imendonc <imendonc@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 13:31:15 by imendonc          #+#    #+#             */
-/*   Updated: 2023/03/27 13:40:23 by imendonc         ###   ########.fr       */
+/*   Updated: 2023/05/22 20:50:25 by imendonc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	word_count(const char *str, char sep)
+static int	contador(char const *s, char c)
 {
-	size_t	word_nr;
-	size_t	is_word;
+	int	i;
+	int	trigger;
 
-	word_nr = 0;
-	is_word = 0;
-	while (*str)
+	i = 0;
+	trigger = 0;
+	while (*s)
 	{
-		if (*str != sep && is_word == 0)
+		if (*s != c && trigger == 0)
 		{
-			is_word = 1;
-			word_nr++;
+			trigger = 1;
+			i++;
 		}
-		else if (*str == sep)
-			is_word = 0;
-		str++;
+		else if (*s == c && trigger == 1)
+			trigger = 0;
+		s++;
 	}
-	return (word_nr);
+	return (i);
 }
 
-static char	*n_substr(const char *str, unsigned int start, size_t lenght)
+static char	*duplicador(char const *str, int strt, int end)
 {
+	char	*palavra;
+	int		i;
+
+	i = 0;
+	palavra = (char *)malloc(((end - strt) + 1) * sizeof(char));
+	if (!palavra)
+	{
+		free(palavra);
+		return (0);
+	}
+	while (strt < end)
+		palavra[i++] = str[strt++];
+	palavra[i] = '\0';
+	return (palavra);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**split;
+	size_t	i;
+	int		f;
 	size_t	index;
-	char	*new_str;
 
-	new_str = (char *)malloc(sizeof(*str) * (lenght - start + 1));
-	if (new_str == 0 || !str)
-		return (NULL);
+	f = 0;
+	i = 0;
+	split = (char **)malloc(sizeof(char *) * (contador(s, c) + 1));
 	index = 0;
-	while (start < lenght)
-	{
-		new_str[index] = str[start];
-		index++;
-		start++;
-	}
-	new_str[index] = '\0';
-	return (new_str);
-}
-
-char	**ft_split(const char *str, char sep)
-{
-	int		start;
-	size_t	new_str_i;
-	size_t	str_i;
-	char	**new_str;
-
-	new_str = malloc(sizeof(char *) * (word_count(str, sep) + 1));
-	if (new_str == NULL)
+	if (!s || !split)
 		return (NULL);
-	str_i = 0;
-	new_str_i = 0;
-	start = -1;
-	while (str_i <= ft_strlen(str))
+	while (i < ft_strlen(s))
 	{
-		if (str[str_i] != sep && start < 0)
-			start = str_i;
-		else if ((str[str_i] == sep || str_i == ft_strlen(str)) && start >= 0)
-		{
-			new_str[new_str_i++] = n_substr(str, start, str_i);
-			start = -1;
-		}
-		str_i++;
+		while (s[i] == c)
+			i++;
+		index = i;
+		while (s[i] != c && s[i])
+			i++;
+		if (s[i] || i > index)
+			split[f++] = duplicador(s, index, i);
 	}
-	new_str[new_str_i] = 0;
-	return (new_str);
+	split[f] = NULL;
+	return (split);
 }
